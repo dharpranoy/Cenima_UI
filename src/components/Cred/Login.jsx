@@ -3,6 +3,8 @@ import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import './Login.css';
+import Home from "../Home/home.jsx";
+
 const Login = () => {
 
 
@@ -12,7 +14,6 @@ const Login = () => {
   const passwordRef = useRef(null);
   const [isValid, setIsValid] = useState(false);
   const [isError, setIsError] = useState(false);
-
 
 
   function streamReader(stream) {
@@ -65,8 +66,8 @@ const Login = () => {
       })
       .then(response => streamReader(response.body))
       .then(data => {
-        data = JSON.parse(data)
-        console.log(data.user.authorities[0].authority)
+        localStorage.setItem("user_cenima", data)
+        console.log(localStorage.getItem("user_cenima"))
       })
       .catch(error => {
         console.error("Login error:", error);
@@ -74,6 +75,9 @@ const Login = () => {
 
   }
 
+  if (setIsValid == true) {
+    return <Home />;
+  }
 
 
   return (
