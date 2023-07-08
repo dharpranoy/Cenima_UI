@@ -1,9 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
-const Navbar = () => {
+
+const Navbar = (props) => {
+
+  let [isCollapsed, setIsCollapsed] = useState(true);
+  const handleToggle = () => {
+    setIsCollapsed(!isCollapsed);
+  }
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark " style={{ backgroundColor: '#222021' }}>
+    <nav className="navbar navbar-expand-lg navbar-dark sticky" style={{ backgroundColor: '#222021', position: 'sticky', zIndex: '100', top: '0' }}>
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
           <img
@@ -11,10 +19,11 @@ const Navbar = () => {
             alt=""
             width="60"
             height="60"
-            style={{ borderRadius: "60%" }}
+            style={{ borderRadius: "60%", objectFit: 'cover' }}
           />
         </a>
         <button
+          onClick={handleToggle}
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
@@ -25,7 +34,7 @@ const Navbar = () => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className={`${isCollapsed ? 'collapse' : ''} navbar-collapse`} id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link to="/" className="nav-link active" style={{ color: '#FFA500' }} aria-current="page">
@@ -38,7 +47,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/login" className="nav-link active" style={{ color: '#FFA500' }} aria-current="page">
+              <Link to={`${props.isLoggedIn ? '/profile' : '/login'}`} className="nav-link active" style={{ color: '#FFA500' }} aria-current="page">
                 Profile
               </Link>
             </li>

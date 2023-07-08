@@ -1,10 +1,18 @@
 import React from 'react';
+import { BallTriangle } from "react-loader-spinner";
 import './Recommended.css';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
-const Recommended = () => {
+const Recommended = (props) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRole, setIsRole] = useState(null)
+  useEffect(() => {
+    if (props.creds != null && props.isLoggedIn) {
+      setIsRole(props.creds.user.authorities[0].authority);
+      setIsLoading(false);
+    }
+  }, [props.creds, props.isLoggedIn]);
 
-  let isRole = "USER";
   const handleDelete = (id) => {
     alert(id);
   }
@@ -89,7 +97,7 @@ const Recommended = () => {
                 <div className="card rcards" id={rmovie.movieId} >
 
 
-                  {isRole == "ADMIN" ? <div className="card-delete">
+                  {isRole == "ROLE_ADMIN" ? <div className="card-delete">
                     <i
                       onClick={() => handleDelete(index)}
                     ><img src={'delete.png'} height={25} width={25} /></i>
@@ -114,7 +122,7 @@ const Recommended = () => {
                 </div>
               </div>
             ))}
-            {isRole == "ADMIN" ? <div className='col-md-3 addRecommCon' >
+            {isRole == "ROLE_ADMIN" ? <div className='col-md-3 addRecommCon' >
               <div className="card addRecomm" >
                 <img
                   src={'add\(1\).png'}

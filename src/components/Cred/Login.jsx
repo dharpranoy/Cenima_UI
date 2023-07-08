@@ -1,12 +1,19 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import './Login.css';
 import Home from "../Home/home.jsx";
 
 const Login = () => {
+  let [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    let creds = localStorage.getItem('user_cenima');
+    if (creds != null) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const [inputValue, setInputValue] = useState('');
   const [inputPassValue, setInputPassValue] = useState('');
@@ -75,13 +82,14 @@ const Login = () => {
 
   }
 
-  if (setIsValid == true) {
-    return <Home />;
+  if (isValid || isLoggedIn) {
+    return <Navigate replace to="/" />;
   }
 
 
   return (
     <>
+
       <div className="p-4 box">
         <div className="row align-items-center">
           <div className="col-md-6 logoc">
@@ -120,9 +128,9 @@ const Login = () => {
                   </Button>
                 </div>
               </Form>
-              {isError == true ? <div className="statusHandle"> <Alert variant="warning">
+              {isError ? <div className="statusHandle"> <Alert variant="warning">
                 Invalid Password or Username
-              </Alert></div> : isValid == true ? <div className="statusHandle"> <Alert variant="success">
+              </Alert></div> : isValid ? <div className="statusHandle"> <Alert variant="success">
                 Login successful
               </Alert></div> : <></>}
               <hr />
